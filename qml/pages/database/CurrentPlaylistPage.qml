@@ -44,7 +44,7 @@ Page {
 //            }
 //        }
 
-        quickScrollEnabled: jollaQuickscroll
+        // quickScrollEnabled: jollaQuickscroll
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
         header: PageHeader {
@@ -86,11 +86,11 @@ Page {
             }
         }
 
-        SpeedScroller {
-            listview: playlistView
-        }
-        ScrollDecorator {
-        }
+        // SpeedScroller {
+        //     listview: playlistView
+        // }
+        // ScrollDecorator {
+        // }
         Component {
             id: trackDelegate
             ListItem {
@@ -155,11 +155,20 @@ Page {
                     }
                 }
 
+                Rectangle {
+                    anchors.fill: parent
+                    color: Theme.rgba(Theme.highlightBackgroundColor, 0.2)
+                    visible: opacity != 0.0
+                    // scale: 0.8
+                    opacity: playing ? 1.0 : 0.0
+                    Behavior on opacity { PropertyAnimation {duration: 750} }
+
+                }
                 Column {
                     id: mainColumn
                     clip: true
-                    height: (trackRow + artistLabel
-                             >= Theme.itemSizeSmall ? trackRow + artistLabel : Theme.itemSizeSmall)
+                    height: (trackRow
+                             >= Theme.itemSizeSmall ? trackRow : Theme.itemSizeSmall)
                     anchors {
                         right: parent.right
                         left: parent.left
@@ -167,53 +176,50 @@ Page {
                         leftMargin: listPadding
                         rightMargin: listPadding
                     }
-                    Row {
+                    Item {
                         id: trackRow
-                        Label {
-                            text: (index + 1) + ". "
-                            anchors {
-                                verticalCenter: parent.verticalCenter
-                            }
-                        }
+                        height: Theme.itemSizeMedium
+                        width: parent.width
+                        // Label {
+                        //     text: (index + 1) + ". "
+                        //     anchors {
+                        //         verticalCenter: parent.verticalCenter
+                        //     }
+                        // }
                         Label {
                             clip: true
                             wrapMode: Text.WrapAnywhere
                             elide: Text.ElideRight
-                            text: (title === "" ? filename + " " : title + " ")
+                            text: (title === "" ? filename : title)
                             font.italic: (playing) ? true : false
                             anchors {
+                                left: parent.left
+                                right: timeLabel.right
                                 verticalCenter: parent.verticalCenter
                             }
                         }
                         Label {
+                            id: timeLabel
                             text: (length === 0 ? "" : " (" + lengthformated + ")")
                             anchors {
+                                right: parent.right
                                 verticalCenter: parent.verticalCenter
                             }
                         }
                     }
-                    Label {
-                        id: artistLabel
-                        text: (artist !== "" ? artist + " - " : "") + (album !== "" ? album : "")
-                        color: Theme.secondaryColor
-                        font.pixelSize: Theme.fontSizeSmall
-                    }
+                    // Label {
+                    //     id: artistLabel
+                    //     text: (artist !== "" ? artist + " - " : "") + (album !== "" ? album : "")
+                    //     color: Theme.secondaryColor
+                    //     font.pixelSize: Theme.fontSizeSmall
+                    // }
                 }
-                OpacityRampEffect {
-                    sourceItem: mainColumn
-                    slope: 3
-                    offset: 0.65
-                }
+                // OpacityRampEffect {
+                //     sourceItem: mainColumn
+                //     slope: 3
+                //     offset: 0.65
+                // }
 //                 Disabled until offically supported
-                GlassItem {
-                    anchors.fill: parent
-                    color: Theme.highlightColor
-                    visible: opacity != 0.0
-                    scale: 0.8
-                    opacity: playing ? 1.0 : 0.0
-                    Behavior on opacity { PropertyAnimation {duration: 750} }
-
-                }
                 onClicked: {
                     playlistView.currentIndex = index
                     if (!playing) {

@@ -77,21 +77,21 @@ Page {
                 id: listView
                 clip: true
                 model: albumsModel
-                quickScrollEnabled: jollaQuickscroll
-                SectionScroller {
-                    listview: listView
-                    landscape: false
-                    sectionPropertyName: "sectionprop"
-                }
-                populate: Transition {
-                    NumberAnimation {
-                        properties: "x"
-                        from: listView.width * 2
-                        duration: populateDuration
-                    }
-                }
-                ScrollDecorator {
-                }
+                // quickScrollEnabled: jollaQuickscroll
+                // SectionScroller {
+                //     listview: listView
+                //     landscape: false
+                //     sectionPropertyName: "sectionprop"
+                // }
+                // populate: Transition {
+                //     NumberAnimation {
+                //         properties: "x"
+                //         from: listView.width * 2
+                //         duration: populateDuration
+                //     }
+                // }
+                // ScrollDecorator {
+                // }
 
                 header: PageHeader {
                     title: artistname !== "" ? artistname : qsTr("albums")

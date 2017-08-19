@@ -18,7 +18,7 @@ Page {
         sourceComponent: Component {
             SilicaGridView {
                 id: artistGridView
-                quickScrollEnabled: jollaQuickscroll
+                // quickScrollEnabled: jollaQuickscroll
                 model: artistsModel
                 cellWidth: Screen.sizeCategory >= Screen.Large ? ((orientation === Orientation.Landscape) || (orientation === Orientation.LandscapeInverted)
                                                                   ? (width / 6) : width / 4) :
@@ -26,20 +26,20 @@ Page {
                 cellHeight: cellWidth
                 cacheBuffer:0
                 property bool scrolling: sectionScroller.scrolling
-                populate: Transition {
-                    NumberAnimation {
-                        properties: "x"
-                        from: artistGridView.width * 2
-                        duration: populateDuration
-                    }
-                }
+                // populate: Transition {
+                //     NumberAnimation {
+                //         properties: "x"
+                //         from: artistGridView.width * 2
+                //         duration: populateDuration
+                //     }
+                // }
 
-                SectionScroller {
-                    id: sectionScroller
-                    gridView: artistGridView
-                    landscape: false
-                    sectionPropertyName: "sectionprop"
-                }
+                // SectionScroller {
+                //     id: sectionScroller
+                //     gridView: artistGridView
+                //     landscape: false
+                //     sectionPropertyName: "sectionprop"
+                // }
                 ScrollDecorator {
                 }
 
@@ -64,24 +64,24 @@ Page {
         sourceComponent: Component {
             SilicaListView {
                 id: artistListView
-                quickScrollEnabled: jollaQuickscroll
+                // quickScrollEnabled: jollaQuickscroll
                 model: artistsModel
                 clip: true
-                populate: Transition {
-                    NumberAnimation {
-                        properties: "x"
-                        from: artistListView.width * 2
-                        duration: populateDuration
-                    }
-                }
+                // populate: Transition {
+                //     NumberAnimation {
+                //         properties: "x"
+                //         from: artistListView.width * 2
+                //         duration: populateDuration
+                //     }
+                // }
 
-                SectionScroller {
-                    listview: artistListView
-                    landscape: false
-                    sectionPropertyName: "sectionprop"
-                }
-                ScrollDecorator {
-                }
+                // SectionScroller {
+                //     listview: artistListView
+                //     landscape: false
+                //     sectionPropertyName: "sectionprop"
+                // }
+                // ScrollDecorator {
+                // }
 
                 header: PageHeader {
                     title: qsTr("artists")

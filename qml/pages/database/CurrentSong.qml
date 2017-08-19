@@ -44,25 +44,25 @@ Page {
                     }
                 }
             }
-            PullDownMenu {
-                MenuItem {
-                    text: qsTr("show all tracks from album")
-                    visible: album === "" ? false : true
-                    onClicked: {
-                        albumClicked("", album)
-                        pageStack.push(Qt.resolvedUrl("AlbumTracksPage.qml"),{artistname:"",albumname:mAlbum});
+            // PullDownMenu {
+            //     MenuItem {
+            //         text: qsTr("show all tracks from album")
+            //         visible: album === "" ? false : true
+            //         onClicked: {
+            //             albumClicked("", album)
+            //             pageStack.push(Qt.resolvedUrl("AlbumTracksPage.qml"),{artistname:"",albumname:mAlbum});
 
-                    }
-                }
-                MenuItem {
-                    text: qsTr("show albums from artist")
-                    visible: artist === "" ? false : true
-                    onClicked: {
-                        artistClicked(artist)
-                        pageStack.push(Qt.resolvedUrl("AlbumListPage.qml"),{artistname:mArtist});
-                    }
-                }
-            }
+            //         }
+            //     }
+            //     MenuItem {
+            //         text: qsTr("show albums from artist")
+            //         visible: artist === "" ? false : true
+            //         onClicked: {
+            //             artistClicked(artist)
+            //             pageStack.push(Qt.resolvedUrl("AlbumListPage.qml"),{artistname:mArtist});
+            //         }
+            //     }
+            // }
             contentHeight: contentColumn.height
             clip: true
             Column {
@@ -111,19 +111,13 @@ Page {
                         sourceprimary: coverimageurl
                         sourcesecondary: artistimageurl
                         active: visible
-                        Rectangle {
-                            color: Theme.rgba(
-                                       Theme.highlightBackgroundColor,
-                                       Theme.highlightBackgroundOpacity)
+                        Image {
                             anchors.fill: parent
                             visible: (!coverImage.ready
                                       && showCoverNowPlaying)
-                            Image {
-                                anchors.fill: parent
-                                source: "qrc:images/pictogram.svg"
-                                sourceSize.width: Screen.width / 2
-                                sourceSize.height: Screen.width / 2
-                            }
+                            source: "qrc:images/pictogram.svg"
+                            sourceSize.width: Screen.width / 2
+                            sourceSize.height: Screen.width / 2
                         }
                     }
                     Item
@@ -145,18 +139,12 @@ Page {
                             }
                             cache: false
                             fillMode: Image.PreserveAspectCrop
-                            Rectangle {
-                                color: Theme.rgba(
-                                           Theme.highlightBackgroundColor,
-                                           Theme.highlightBackgroundOpacity)
+                            Image {
                                 anchors.fill: parent
                                 visible: albumImgLandscape.status != Image.Ready
-                                Image {
-                                    anchors.fill: parent
-                                    source: "qrc:images/pictogram.svg"
-                                    sourceSize.width: Screen.width / 2
-                                    sourceSize.height: Screen.width / 2
-                                }
+                                source: "qrc:images/pictogram.svg"
+                                sourceSize.width: Screen.width / 2
+                                sourceSize.height: Screen.width / 2
                             }
                         }
                         Image
@@ -172,38 +160,32 @@ Page {
                             }
                             cache: false
                             fillMode: Image.PreserveAspectCrop
-                            Rectangle {
-                                color: Theme.rgba(
-                                           Theme.highlightBackgroundColor,
-                                           Theme.highlightBackgroundOpacity)
+                            Image {
                                 anchors.fill: parent
                                 visible: artistImgLandscape.status != Image.Ready
-                                Image {
-                                    anchors.fill: parent
-                                    source: "qrc:images/pictogram.svg"
-                                    sourceSize.width: Screen.width / 2
-                                    sourceSize.height: Screen.width / 2
-                                }
+                                source: "qrc:images/pictogram.svg"
+                                sourceSize.width: Screen.width / 2
+                                sourceSize.height: Screen.width / 2
                             }
                         }
-                        Rectangle
-                        {
-                            anchors.fill: parent
-                            gradient: Gradient {
-                                GradientStop {
-                                    position: 0.5
-                                    color: Qt.rgba(0.0, 0.0, 0.0, 0.0)
-                                }
-                                GradientStop {
-                                    position: 0.7
-                                    color: Qt.rgba(0.0, 0.0, 0.0, 0.3)
-                                }
-                                GradientStop {
-                                    position: 1.0
-                                    color: Qt.rgba(0.0, 0.0, 0.0, 1.0)
-                                }
-                            }
-                        }
+                        // Rectangle
+                        // {
+                        //     anchors.fill: parent
+                        //     gradient: Gradient {
+                        //         GradientStop {
+                        //             position: 0.5
+                        //             color: Qt.rgba(0.0, 0.0, 0.0, 0.0)
+                        //         }
+                        //         GradientStop {
+                        //             position: 0.7
+                        //             color: Qt.rgba(0.0, 0.0, 0.0, 0.3)
+                        //         }
+                        //         GradientStop {
+                        //             position: 1.0
+                        //             color: Qt.rgba(0.0, 0.0, 0.0, 1.0)
+                        //         }
+                        //     }
+                        // }
 
 
                         Column
@@ -253,14 +235,14 @@ Page {
 
                     }
                     // Spacing hack
-                    Rectangle
-                    {
-                        opacity:0.0
-                        // Center landscapeimages
-                        height: (currentsong_page.height-landscapeImageRow.height)/2
-                        width: parent.width
-                        visible: landscapeImageRow.visible
-                    }
+                    // Rectangle
+                    // {
+                    //     opacity:0.0
+                    //     // Center landscapeimages
+                    //     height: (currentsong_page.height-landscapeImageRow.height)/2
+                    //     width: parent.width
+                    //     visible: landscapeImageRow.visible
+                    // }
 
                     ScrollLabel {
                         id: titleText
@@ -293,188 +275,114 @@ Page {
                         }
                     }
 
-                    Label {
-                        text: qsTr("track no.:")
-                        color: Theme.secondaryColor
-                        font.pixelSize: fontsizegrey
-                        anchors {
-                            left: parent.left
-                        }
-                    }
-                    Label {
-                        id: nrText
-                        text: mTrackNr
-                        color: Theme.primaryColor
-                        font.pixelSize: fontsize
-                        wrapMode: "WordWrap"
-//                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
+//                     Label {
+//                         text: qsTr("track no.:")
+//                         color: Theme.secondaryColor
+//                         font.pixelSize: fontsizegrey
+//                         anchors {
+//                             left: parent.left
+//                         }
+//                     }
+//                     Label {
+//                         id: nrText
+//                         text: mTrackNr
+//                         color: Theme.primaryColor
+//                         font.pixelSize: fontsize
+//                         wrapMode: "WordWrap"
+// //                        anchors.horizontalCenter: parent.horizontalCenter
+//                     }
 
 
-                    Label {
-                        text: qsTr("playlist no.:")
-                        color: Theme.secondaryColor
-                        font.pixelSize: fontsizegrey
-                        anchors {
-                            left: parent.left
-                        }
-                    }
-                    Label {
-                        id: playlistnrText
-                        text: (lastsongid+1) + " / " + mPlaylistlength
-                        color: Theme.primaryColor
-                        font.pixelSize: fontsize
-                        wrapMode: "WordWrap"
-//                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
+//                     Label {
+//                         text: qsTr("playlist no.:")
+//                         color: Theme.secondaryColor
+//                         font.pixelSize: fontsizegrey
+//                         anchors {
+//                             left: parent.left
+//                         }
+//                     }
+//                     Label {
+//                         id: playlistnrText
+//                         text: (lastsongid+1) + " / " + mPlaylistlength
+//                         color: Theme.primaryColor
+//                         font.pixelSize: fontsize
+//                         wrapMode: "WordWrap"
+// //                        anchors.horizontalCenter: parent.horizontalCenter
+//                     }
 
-                    Label {
-                        text: qsTr("bitrate:")
-                        color: Theme.secondaryColor
-                        font.pixelSize: fontsizegrey
-                    }
-                    Label {
-                        id: bitrateText
-                        text: mBitrate
-                        color: Theme.primaryColor
-                        font.pixelSize: fontsize
-                        wrapMode: "WordWrap"
-//                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                    Label {
-                        text: qsTr("properties:")
-                        color: Theme.secondaryColor
-                        font.pixelSize: fontsizegrey
-                    }
-                    Label {
-                        id: audiopropertiesText
-                        text: mAudioProperties
-                        color: Theme.primaryColor
-                        font.pixelSize: fontsize
-                        wrapMode: "WordWrap"
-//                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                    Label {
-                        text: qsTr("uri:")
-                        color: Theme.secondaryColor
-                        font.pixelSize: fontsizegrey
-                    }
-                    Label {
-                        id: fileText
-                        text: mUri
-                        color: Theme.primaryColor
-                        font.pixelSize: fontsize
-                        wrapMode: "WrapAnywhere"
+//                     Label {
+//                         text: qsTr("bitrate:")
+//                         color: Theme.secondaryColor
+//                         font.pixelSize: fontsizegrey
+//                     }
+//                     Label {
+//                         id: bitrateText
+//                         text: mBitrate
+//                         color: Theme.primaryColor
+//                         font.pixelSize: fontsize
+//                         wrapMode: "WordWrap"
+// //                        anchors.horizontalCenter: parent.horizontalCenter
+//                     }
+//                     Label {
+//                         text: qsTr("properties:")
+//                         color: Theme.secondaryColor
+//                         font.pixelSize: fontsizegrey
+//                     }
+//                     Label {
+//                         id: audiopropertiesText
+//                         text: mAudioProperties
+//                         color: Theme.primaryColor
+//                         font.pixelSize: fontsize
+//                         wrapMode: "WordWrap"
+// //                        anchors.horizontalCenter: parent.horizontalCenter
+//                     }
+//                     Label {
+//                         text: qsTr("uri:")
+//                         color: Theme.secondaryColor
+//                         font.pixelSize: fontsizegrey
+//                     }
+//                     Label {
+//                         id: fileText
+//                         text: mUri
+//                         color: Theme.primaryColor
+//                         font.pixelSize: fontsize
+//                         wrapMode: "WrapAnywhere"
 
-                        anchors {
-                            left: parent.left
-                            right: parent.right
-                        }
-                    }
+//                         anchors {
+//                             left: parent.left
+//                             right: parent.right
+//                         }
+//                     }
                 }
             }
         }
 
 
 
-        backgroundSize: volumeControl.height + positionSlider.height + buttonRow.height
+        backgroundSize: volumeSlider.height + positionSlider.height + buttonRow.height
         background: Column {
             id: backgroundColumn
             anchors.fill: parent
-            Item {
-                id: volumeControl
+
+            Slider {
+                id: volumeSlider
                 width: parent.width
-                height: volumeSlider.height
-                state: "sliderInvisible"
-                states: [
-                    State {
-                        name: "sliderVisible"
-                        PropertyChanges {
-                            target: volumeSlider
-                            enabled: true
-                            opacity: 1.0
-                        }
-                        PropertyChanges {
-                            target: volumeButton
-                            enabled: false
-                            opacity: 0.0
-                        }
-                    },
-                    State {
-                        name: "sliderInvisible"
-                        PropertyChanges {
-                            target: volumeSlider
-                            enabled: false
-                            opacity: 0.0
-                        }
-                        PropertyChanges {
-                            target: volumeButton
-                            enabled: true
-                            opacity: 1.0
-                        }
-                    }
-                ]
-
-                transitions: [
-                    Transition {
-                        NumberAnimation {
-                            properties: "opacity"
-                            duration: 500
-                        }
-                    }
-                ]
-
-                IconButton {
-                    id: volumeButton
-                    anchors.centerIn: parent
-                    icon.source: "image://theme/icon-m-speaker"
-                    onClicked: {
-                        volumeControl.state = "sliderVisible"
-                        volumeSliderFadeOutTimer.start()
-                    }
-                    icon.onStatusChanged: {
-                        if ( icon.status == Image.Error) {
-                            // Try old icon name before Sailfish 2.0
-                            icon.source = "image://theme/icon-status-volume-max"
-                        }
+                stepSize: 1
+                maximumValue: 100
+                minimumValue: 0
+                value: mVolume
+                valueText: value + "%"
+                label: qsTr("volume")
+                onPressedChanged: {
+                    if (!pressed) {
+                        setVolume(value)
+                        value  = Qt.binding(function() {return mVolume;});
                     }
                 }
-
-                Slider {
-                    anchors.fill: parent
-
-                    id: volumeSlider
-                    stepSize: 1
-                    maximumValue: 100
-                    minimumValue: 0
-                    value: mVolume
-                    valueText: value + "%"
-                    label: qsTr("volume")
-                    onPressedChanged: {
-                        if (!pressed) {
-                            volumeChanging = false
-                            setVolume(value)
-                            value  = Qt.binding(function() {return mVolume;});
-                            volumeControl.state = "sliderInvisible"
-                        } else {
-                            volumeChanging = true
-                            volumeSliderFadeOutTimer.stop()
-                        }
-                    }
-                    onValueChanged: {
-                        if(pressed)
-                            setVolume(value)
-                        // valueText = value+"%";
-                    }
-                }
-
-                Timer {
-                    id: volumeSliderFadeOutTimer
-                    interval: 3000
-                    repeat: false
-                    onTriggered: {
-                        volumeControl.state = "sliderInvisible"
-                    }
+                onValueChanged: {
+                    if(pressed)
+                        setVolume(value)
+                    // valueText = value+"%";
                 }
             }
 
@@ -509,17 +417,17 @@ Page {
             }
             Row {
                 id: buttonRow
-                anchors.horizontalCenter: parent.horizontalCenter
-                height: shuffleButton.height
-                Switch {
-                    id: shuffleButton
-                    icon.source: "image://theme/icon-m-shuffle"
-                    automaticCheck: false
-                    checked: mShuffle
-                    onClicked: {
-                        setShuffle(!checked)
-                    }
-                }
+                // anchors.horizontalCenter: parent.horizontalCenter
+                // height: shuffleButton.height
+                // Switch {
+                //     id: shuffleButton
+                //     icon.source: "image://theme/icon-m-shuffle"
+                //     automaticCheck: false
+                //     checked: mShuffle
+                //     onClicked: {
+                //         setShuffle(!checked)
+                //     }
+                // }
                 IconButton {
                     id: prevButton
                     icon.source: "image://theme/icon-m-previous"
@@ -540,15 +448,15 @@ Page {
                     icon.source: "image://theme/icon-m-next"
                     onClicked: next()
                 }
-                Switch {
-                    id: repeatButton
-                    automaticCheck: false
-                    checked: mRepeat
-                    icon.source: "image://theme/icon-m-repeat"
-                    onClicked: {
-                        setRepeat(!checked)
-                    }
-                }
+                // Switch {
+                //     id: repeatButton
+                //     automaticCheck: false
+                //     checked: mRepeat
+                //     icon.source: "image://theme/icon-m-repeat"
+                //     onClicked: {
+                //         setRepeat(!checked)
+                //     }
+                // }
             }
         }
     }
@@ -562,9 +470,11 @@ Page {
 //            positionSlider.handleVisible = false;
 //            positionSlider.handleVisible = true;
 //            positionSlider.valueText = Qt.binding(function () {return formatLength(positionSlider.value);})
-            quickControlPanel.hideControl = true
+            // quickControlPanel.hideControl = true
+            // quickControlPanel.visible = false
         } else {
-            quickControlPanel.hideControl = false
+            // quickControlPanel.hideControl = false
+            // quickControlPanel.visible = true
             pageactive = false
         }
     }
@@ -605,14 +515,14 @@ Page {
                 target: drawerOpenBackgroundItem
                 enabled: false
             }
-            PropertyChanges {
-                target: shuffleButton
-                visible: true
-            }
-            PropertyChanges {
-                target: repeatButton
-                visible: true
-            }
+//            PropertyChanges {
+//                target: shuffleButton
+//                visible: true
+//            }
+//            PropertyChanges {
+//                target: repeatButton
+//                visible: true
+//            }
         },
         State
         {

@@ -39,10 +39,10 @@ Component {
                     id: albumLabel
                     text: (title === "" ? qsTr("no album tag") : title)
                 }
-                Label {
-                    id: artistLabel
-                    text: (artist === "" ? qsTr("no artist tag") : artist)
-                }
+                // Label {
+                //     id: artistLabel
+                //     text: (artist === "" ? qsTr("no artist tag") : artist)
+                // }
             }
         }
         OpacityRampEffect {

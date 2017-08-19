@@ -57,7 +57,7 @@ DockedPanel {
         ScrollLabel {
             id: artistText
             text: mArtist
-            color: Theme.primaryColor
+            color: Theme.secondaryColor
             font.pixelSize: Theme.fontSizeSmall
             font.bold: false
             font.family: Theme.fontFamily

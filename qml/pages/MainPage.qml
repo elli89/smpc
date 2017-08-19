@@ -7,28 +7,16 @@ Page {
     allowedOrientations: Orientation.All
     PageHeader {
         id: mainHeader
-        title: "SMPC"
+        title: connected ? qsTr("%1").arg(profilename) : qsTr("disconnected")
         anchors {
             top: parent.top
             right: parent.right
             left: parent.left
         }
     }
-    Label {
-        id: connectedLabel
-        anchors {
-            top: mainHeader.bottom
-            right: parent.right
-            left: parent.left
-        }
-        horizontalAlignment: Text.AlignHCenter
-        color: Theme.highlightColor
-        text: connected ? qsTr("connected to: %1").arg(profilename) : qsTr(
-                              "disconnected")
-    }
     SilicaFlickable {
         anchors {
-            top: connectedLabel.bottom
+            top: mainHeader.bottom
             bottom: parent.bottom
             right: parent.right
             left: parent.left
@@ -103,24 +91,9 @@ Page {
 
     Component.onCompleted: {
         mainMenuModel.append({
-                                 name: qsTr("playlist"),
-                                 ident: "playlist",
-                                 icon: "image://theme/icon-m-document"
-                             })
-        mainMenuModel.append({
-                                 name: qsTr("artists"),
-                                 ident: "artists",
-                                 icon: "image://theme/icon-m-mic"
-                             })
-        mainMenuModel.append({
-                                 name: qsTr("albums"),
-                                 ident: "albums",
+                                 name: qsTr("music"),
+                                 ident: "music",
                                  icon: "image://theme/icon-m-music"
-                             })
-        mainMenuModel.append({
-                                 name: qsTr("files"),
-                                 ident: "files",
-                                 icon: "image://theme/icon-m-folder"
                              })
         mainMenuModel.append({
                                  name: qsTr("search"),
@@ -155,33 +128,18 @@ Page {
     }
 
     function parseClickedMainMenu(ident) {
-        if (ident === "playlist") {
-            if (connected) {
-                pageStack.navigateForward(PageStackAction.Animated)
-            }
-        } else if (ident === "settings") {
+        if (ident === "settings") {
             pageStack.push(Qt.resolvedUrl("settings/SettingsPage.qml"))
         } else if (ident === "currentsong") {
             if (connected)
                 pageStack.push(currentsongpage)
             //                        if(connected)
             //                            pageStack.push(Qt.resolvedUrl("CurrentSong.qml"));
-        } else if (ident === "albums") {
-            artistname = ""
-            if (connected) {
-                requestAlbums()
-                pageStack.push(Qt.resolvedUrl("database/AlbumListPage.qml"), {
-                                   artistname: artistname
-                               })
-            }
-        } else if (ident === "artists") {
+        } else if (ident === "music") {
             if (connected) {
                 requestArtists()
                 pageStack.push(Qt.resolvedUrl("database/ArtistListPage.qml"))
             }
-        } else if (ident === "files") {
-            if (connected)
-                filesClicked("/")
         } else if (ident === "connectto") {
             pageStack.push(Qt.resolvedUrl("settings/ConnectServerPage.qml"))
         } else if (ident === "about") {
