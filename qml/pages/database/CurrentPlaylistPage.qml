@@ -16,7 +16,7 @@ Page {
     SilicaListView {
         id: playlistView
         clip: true
-        delegate: trackDelegate
+        delegate: playlistTrackDelegate
         currentIndex: lastsongid
         cacheBuffer: 0
         anchors {
@@ -92,9 +92,9 @@ Page {
         // ScrollDecorator {
         // }
         Component {
-            id: trackDelegate
-            ListItem {
-                contentHeight: mainColumn. height
+            id: playlistTrackDelegate
+            TrackDelegate {
+                contentHeight: Theme.itemSizeSmall
                 menu: contextMenu
                 Component {
                     id: contextMenu
@@ -154,72 +154,6 @@ Page {
 
                     }
                 }
-
-                Rectangle {
-                    anchors.fill: parent
-                    color: Theme.rgba(Theme.highlightBackgroundColor, 0.2)
-                    visible: opacity != 0.0
-                    // scale: 0.8
-                    opacity: playing ? 1.0 : 0.0
-                    Behavior on opacity { PropertyAnimation {duration: 750} }
-
-                }
-                Column {
-                    id: mainColumn
-                    clip: true
-                    height: (trackRow
-                             >= Theme.itemSizeSmall ? trackRow : Theme.itemSizeSmall)
-                    anchors {
-                        right: parent.right
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: listPadding
-                        rightMargin: listPadding
-                    }
-                    Item {
-                        id: trackRow
-                        height: Theme.itemSizeMedium
-                        width: parent.width
-                        // Label {
-                        //     text: (index + 1) + ". "
-                        //     anchors {
-                        //         verticalCenter: parent.verticalCenter
-                        //     }
-                        // }
-                        Label {
-                            clip: true
-                            wrapMode: Text.WrapAnywhere
-                            elide: Text.ElideRight
-                            text: (title === "" ? filename : title)
-                            font.italic: (playing) ? true : false
-                            anchors {
-                                left: parent.left
-                                right: timeLabel.right
-                                verticalCenter: parent.verticalCenter
-                            }
-                        }
-                        Label {
-                            id: timeLabel
-                            text: (length === 0 ? "" : " (" + lengthformated + ")")
-                            anchors {
-                                right: parent.right
-                                verticalCenter: parent.verticalCenter
-                            }
-                        }
-                    }
-                    // Label {
-                    //     id: artistLabel
-                    //     text: (artist !== "" ? artist + " - " : "") + (album !== "" ? album : "")
-                    //     color: Theme.secondaryColor
-                    //     font.pixelSize: Theme.fontSizeSmall
-                    // }
-                }
-                // OpacityRampEffect {
-                //     sourceItem: mainColumn
-                //     slope: 3
-                //     offset: 0.65
-                // }
-//                 Disabled until offically supported
                 onClicked: {
                     playlistView.currentIndex = index
                     if (!playing) {

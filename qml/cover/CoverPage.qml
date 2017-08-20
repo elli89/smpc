@@ -6,35 +6,14 @@ CoverBackground {
     id: coverpage
     anchors.fill: parent
 
-    function recheckActive() {
-        if ((status === Cover.Activating || status === Cover.Active)) {
-            coverimg.active = true
-        } else {
-            coverimg.active = false
-        }
-    }
-
-    OpacityRampEffect {
-        sourceItem: toggleImage
-        direction: OpacityRamp.BottomToTop
-        visible: (coverimg.sourceprimary != ""
-                  || coverimg.sourcesecondary != "")
-    }
-
-    Item {
-        id: toggleImage
+    Image {
+        id: coverimg
         anchors.fill: parent
-        ToggleImage {
-            id: coverimg
-            anchors.fill: parent
-            sourceprimary: coverimageurl
-            sourcesecondary: artistimageurl
-            fillMode: Image.PreserveAspectCrop
-        }
+        source: coverimageurl
+        fillMode: Image.PreserveAspectCrop
     }
 
     Rectangle {
-        visible: ( coverimg.ready  )
         anchors.fill: parent
         color: Theme.highlightBackgroundColor
         gradient: Gradient {
@@ -61,19 +40,6 @@ CoverBackground {
         anchors.centerIn: parent
     }
 
-    onStatusChanged: {
-        recheckActive()
-    }
-
-    //    Image{
-    //        visible: (stopped||(coverimg.sourceprimary==""&&coverimg.sourcesecondary==""))
-    //        anchors.centerIn: coverrpage
-    //        source: "qrc:/images/smpc-big.png"
-    //        width: coverpage.width-(coverpage.width/3)
-    //        height: width
-    //        smooth: true
-    //        opacity: 0.8
-    //    }
     Label {
         id: textLabel
         anchors.centerIn: coverpage

@@ -6,31 +6,20 @@ Item {
     width: parent.width
     property string album: section.split('|')[1]
     property string artist: section.split('|')[0]
+
     Rectangle {
         id: sectionFillRect
         color: Theme.rgba(Theme.highlightBackgroundColor, 0.3)
-        anchors {
-            fill: parent
-        }
-        // gradient: Gradient {
-        //     GradientStop {
-        //         position: 0.0
-        //         color: Theme.rgba(Theme.highlightBackgroundColor, 0.0)
-        //     }
-        //     GradientStop {
-        //         position: 1.0
-        //         //color: Theme.rgba(Theme.highlightBackgroundColor, 0.6)
-        //         color: Theme.rgba(Theme.highlightBackgroundColor, 0.3)
-        //     }
-        // }
+        anchors.fill: parent
     }
+
     Row {
         anchors {
-            right: parent.right
-            rightMargin: listPadding
+            fill: parent
+            rightMargin: Theme.paddingMedium
+            leftMargin: Theme.paddingMedium
         }
         layoutDirection: Qt.RightToLeft
-        height: parent.heigth
 
         Image {
             id: sectionImage
@@ -54,45 +43,31 @@ Item {
             id: textColumn
             Label {
                 id: albumLabel
-                // height: Theme.itemSizeSmall
                 text: album
                 anchors {
-                //     left: parent.left
-                //     leftMargin: listPadding
                     right: parent.right
                     rightMargin: Theme.paddingSmall
                 }
 
                 font.pixelSize: Theme.fontSizeLarge
-                // verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
                 maximumLineCount: 1
                 elide: Text.ElideRight
             }
             Label {
                 id: artistLabel
-                // height: Theme.itemSizeSmall
                 text: artist
                 anchors {
-                //     left: parent.left
-                //     leftMargin: listPadding
                     right: parent.right
                     rightMargin: Theme.paddingSmall
                 }
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
 
-                // font.pixelSize: Theme.fontSizeLarge
-                // verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignRight
                 maximumLineCount: 1
                 elide: Text.ElideRight
             }
         }
-
-        // OpacityRampEffect {
-        //     sourceItem: sectionImage
-        //     direction: OpacityRamp.BottomToTop
-        // }
     }
 }

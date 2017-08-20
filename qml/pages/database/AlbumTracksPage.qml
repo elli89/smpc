@@ -12,7 +12,6 @@ Page {
 
     Loader {
         id: portraitLoader
-        active: false
         anchors.fill: parent
 //        anchors.bottomMargin: quickControlPanel.visibleSize
         sourceComponent: Component {
@@ -23,81 +22,19 @@ Page {
                 contentWidth: width
                 model: tracksModel
                 clip: true
-                populate: Transition {
-                    NumberAnimation {
-                        properties: "x"
-                        from: albumTracksListView.width * 2
-                        duration: populateDuration
-                    }
-                }
-                header: Item {
-                    height: headerColumn.height
-                    width: albumTracksListView.width
-                    Column {
-                        id: headerColumn
-                        height: header.height + imageRow.height
-                        width: parent.width
-                        PageHeader {
-                            id: header
-                            title: albumname
-                        }
-                        Row {
-                            id: imageRow
-                            width: parent.width
-                            height: width / 2
-                            Image {
-                                id: artistImage
-                                width: parent.width / 2
-                                height: imageRow.height
-                                cache: true
-                                asynchronous: true
-                                sourceSize.width: width
-                                sourceSize.height: height
-                                source: artistname == "" ? "image://imagedbprovider/artistfromalbum/" + albumname : "image://imagedbprovider/artist/" + artistname
-                                fillMode: Image.PreserveAspectCrop
-                                onStatusChanged: {
-                                    if (status == Image.Error
-                                            && albumImage.status == Image.Error) {
-                                        // Disable image and set imageRow height to 0
-                                        imageRow.height = 0
-                                    }
-                                }
-                            }
-                            Image {
-                                id: albumImage
-                                width: parent.width / 2
-                                height: imageRow.height
-                                cache: true
-                                asynchronous: true
-                                sourceSize.width: width
-                                sourceSize.height: height
-                                source: artistname
-                                        == "" ? "image://imagedbprovider/album/"
-                                                + albumname : "image://imagedbprovider/album/"
-                                                + artistname + "/" + albumname
-                                fillMode: Image.PreserveAspectCrop
-                                onStatusChanged: {
-                                    if (status == Image.Error
-                                            && artistImage.status == Image.Error) {
-                                        // Disable image and set imageRow height to 0
-                                        imageRow.height = 0
-                                    }
-                                }
 
-                                MouseArea {
-                                    anchors.fill: albumImage
-                                    onClicked: {
-                                        playAlbum([artistname, albumname])
-                                    }
-                                }
-                            }
+                section {
+                    delegate: Loader {
+                        active: visible
+                        height: Theme.itemSizeMedium
+                        width: parent.width
+                        sourceComponent: PlaylistSectionDelegate{
+                            width:undefined
                         }
                     }
-                    OpacityRampEffect {
-                        sourceItem: headerColumn
-                        direction: OpacityRamp.TopToBottom
-                    }
+                    property: "section"
                 }
+
                 PullDownMenu {
                     MenuItem {
                         enabled: (artistname!=="")
@@ -121,175 +58,8 @@ Page {
                         }
                     }
                 }
-                delegate: trackDelegate
+                delegate: albumTrackDelegate
             }
-        }
-    }
-
-    Loader {
-        id: landscapeLoader
-        anchors {
-            fill: parent
-//            rightMargin: quickControlPanel.visibleSize
-        }
-        active: false
-        sourceComponent: Component {
-            Item {
-                id: landscapeItem
-                anchors.fill: parent
-                Column {
-                    id: pictureColumn
-                    anchors {
-                        top: parent.top
-                        bottom: parent.bottom
-                        left: parent.left
-                    }
-
-                    width: parent.height / 2
-                    Image {
-                        id: artistImageLC
-                        width: height
-                        height: pictureColumn.width
-                        cache: true
-                        asynchronous: true
-                        source: artistname
-                                == "" ? "image://imagedbprovider/artistfromalbum/"
-                                        + albumname : "image://imagedbprovider/artist/" + artistname
-                        fillMode: Image.PreserveAspectCrop
-                        onStatusChanged: {
-                            if (status == Image.Error
-                                    && albumImageLC.status == Image.Error) {
-                                // Disable image and set imageRow height to 0
-                                pictureColumn.width = 0
-                            }
-                        }
-                    }
-                    Image {
-                        id: albumImageLC
-                        width: height
-                        height: pictureColumn.width
-                        cache: true
-                        asynchronous: true
-                        source: artistname == "" ? "image://imagedbprovider/album/"
-                                                   + albumname : "image://imagedbprovider/album/"
-                                                   + artistname + "/" + albumname
-                        fillMode: Image.PreserveAspectCrop
-                        onStatusChanged: {
-                            if (status == Image.Error
-                                    && artistImageLC.status == Image.Error) {
-                                // Disable image and set imageRow height to 0
-                                pictureColumn.width = 0
-                            }
-                        }
-
-                        MouseArea {
-                            anchors.fill: albumImageLC
-                            onClicked: {
-                                playAlbum([artistname, albumname])
-                            }
-                        }
-                    }
-                }
-                SilicaListView {
-                    id: listViewLC
-                    anchors {
-                        top: parent.top
-                        bottom: parent.bottom
-                        right: parent.right
-                        left: pictureColumn.right
-                    }
-                    header: PageHeader{
-                        title: albumname
-                    }
-                    quickScrollEnabled: jollaQuickscroll
-                    PullDownMenu {
-                        MenuItem {
-                            enabled: (artistname!=="")
-                            visible: enabled
-                            text: qsTr("show all tracks")
-                            onClicked: {
-                                albumClicked("", albumname);
-                                artistname = "";
-                            }
-                        }
-                        MenuItem {
-                            text: qsTr("add album")
-                            onClicked: {
-                                addAlbum([artistname, albumname])
-                            }
-                        }
-                        MenuItem {
-                            text: qsTr("play album")
-                            onClicked: {
-                                playAlbum([artistname, albumname])
-                            }
-                        }
-
-                    }
-
-                    model: tracksModel
-                    clip: true
-                    populate: Transition {
-                        NumberAnimation {
-                            properties: "x"
-                            from: listViewLC.width * 2
-                            duration: populateDuration
-                        }
-                    }
-                    delegate: trackDelegate
-                }
-                OpacityRampEffect {
-                    sourceItem: pictureColumn
-                    direction: OpacityRamp.LeftToRight
-                }
-            }
-        }
-    }
-
-    onStatusChanged: {
-        if (status === PageStatus.Deactivating) {
-
-        } else if (status === PageStatus.Activating) {
-            if (!orientationTransitionRunning) {
-                // Activate correct loader
-                if ((orientation === Orientation.Portrait) || (orientation === Orientation.PortraitInverted)) {
-                    if ( landscapeLoader.active ) {
-                        landscapeLoader.active = false;
-                    }
-                    portraitLoader.active = true
-                } else if ((orientation === Orientation.Landscape) || (orientation === Orientation.LandscapeInverted)) {
-                    if ( portraitLoader.active ) {
-                        portraitLoader.active = false;
-                    }
-                    landscapeLoader.active = true
-                }
-            } else {
-                // Deactivate both loaders
-                portraitLoader.active = false
-                landscapeLoader.active = false
-            }
-        } else if (status === PageStatus.Active) {
-
-            requestAlbumInfo([albumname, artistname])
-            pageStack.pushAttached(Qt.resolvedUrl("AlbumInfoPage.qml"), {
-                                       albumname: albumname
-                                   })
-        }
-    }
-    onOrientationTransitionRunningChanged: {
-        if (!orientationTransitionRunning) {
-            // Activate correct loader
-            if ((orientation === Orientation.Portrait) || (orientation === Orientation.PortraitInverted)) {
-
-
-                portraitLoader.active = true
-            } else if ((orientation === Orientation.Landscape) || (orientation === Orientation.LandscapeInverted)) {
-                landscapeLoader.active = true
-            }
-        } else {
-            // Deactivate both loaders
-            portraitLoader.active = false
-            landscapeLoader.active = false
         }
     }
 
@@ -298,65 +68,15 @@ Page {
     }
 
     Component {
-        id: trackDelegate
-        ListItem {
+        id: albumTrackDelegate
+        TrackDelegate {
             menu: contextMenu
-            contentHeight: Theme.itemSizeSmall
-            Column {
-                id: mainColumn
-                clip: true
-                height: (titleRow.height + artistLabel.height
-                         >= Theme.itemSizeSmall ? titleRow.height
-                                                  + artistLabel.height : Theme.itemSizeSmall)
-                anchors {
-                    right: parent.right
-                    left: parent.left
-                    verticalCenter: parent.verticalCenter
-                    leftMargin: listPadding
-                    rightMargin: listPadding
-                }
 
-                Row {
-                    id: titleRow
-                    Label {
-                        text: tracknr + ". "
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                        }
-                    }
-                    Label {
-                        clip: true
-                        wrapMode: Text.WrapAnywhere
-                        elide: Text.ElideRight
-                        text: (title === "" ? filename : title)
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                        }
-                    }
-                    Label {
-                        text: (length === 0 ? "" : " (" + lengthformated + ")")
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                        }
-                    }
-                }
-                Label {
-                    id: artistLabel
-                    text: (artist !== "" ? artist + " - " : "") + (album !== "" ? album : "")
-                    color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeSmall
-                }
-            }
-
-            OpacityRampEffect {
-                sourceItem: mainColumn
-                slope: 3
-                offset: 0.65
-            }
             onClicked: {
-                //albumTracksListView.currentIndex = index
-                albumTrackClicked(title, album, artist, lengthformated, path,
-                                  year, tracknr,trackmbid,artistmbid,albummbid);
+                playTrackRemorse()
+                // albumTracksListView.currentIndex = index
+                // albumTrackClicked(title, album, artist, lengthformated, path,
+                //                   year, tracknr,trackmbid,artistmbid,albummbid);
             }
             function playTrackRemorse() {
                 remorseAction(qsTr("playing track"), function () {
