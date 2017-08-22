@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 import "../../components"
 
 Page {
-    id: currentsong_page
+    id: currentsongPage
     property string title:mTitle
     property string album:mAlbum
     property string artist:mArtist
@@ -11,9 +11,6 @@ Page {
     property bool shuffle
     property bool repeat
     property bool playing
-    property int fontsize: Theme.fontSizeMedium
-    property int fontsizegrey: Theme.fontSizeSmall
-    property bool detailsvisible: true
 
     Component.onDestruction: {
         mCurrentSongPage = null;
@@ -21,64 +18,53 @@ Page {
 
     allowedOrientations: Orientation.All
 
-    SilicaFlickable {
-        id: infoFlickable
+    Item {
+        id: portraitLayout
+        visible: (orientation === Orientation.Portrait || orientation === Orientation.PortraitInverted)
         anchors.fill: parent
-        clip: true
 
-        // Column {
-        //     id: backgroundColumn
-        //     anchors {
-        //         fill: parent
-        //         // rightMargin: Theme.paddingMedium
-        //         // leftMargin: Theme.paddingMedium
-        //     }
-
-        //     CurrentSongCover
-        //     {
-        //         anchors {
-        //             bottom: controlColumn.top
-        //             top: parent.top
-        //             left: parent.left
-        //             right: parent.right
-        //             margins: Theme.paddingLarge
-        //         }
-        //     }
-
-        //     ControlColumn {
-        //         id: controlColumn
-        //         anchors {
-        //             bottom: parent.bottom
-        //             left: parent.left
-        //             right: parent.right
-        //         }
-        //     }
-        // }
-
-        Row {
-            id: backgroundRow
-            anchors.fill: parent
-
-            CurrentSongCover
-            {
-                id: cover
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                    left: parent.left
-                    // right: controlColumn.left
-                    margins: Theme.paddingLarge
-                }
+        AlbumImage {
+            id: portraitAlbumImage
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+                bottom: portraitControlColumn.top
             }
+        }
 
-            ControlColumn {
-                id: controlColumn
-                anchors {
-                    right: parent.right
-                    left: cover.right
-                    top: parent.top
-                    bottom: parent.bottom
-                }
+        ControlColumn {
+            id: portraitControlColumn
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
+        }
+    }
+
+    Item {
+        id: landscapeLayout
+        visible: (orientation === Orientation.Landscape || orientation === Orientation.LandscapeInverted)
+        anchors.fill: parent
+
+        AlbumImage {
+            id: landscapeAlbumImage
+            anchors {
+                left: parent.left
+                right: landscapeControlColumn.left
+                top: parent.top
+                bottom: parent.bottom
+            }
+        }
+
+        ControlColumn {
+            id: landscapeControlColumn
+            width: parent.width / 2
+            anchors {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
             }
         }
     }

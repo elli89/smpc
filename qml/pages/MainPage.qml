@@ -7,7 +7,7 @@ Page {
     allowedOrientations: Orientation.All
     PageHeader {
         id: mainHeader
-        title: connected ? qsTr("%1").arg(profilename) : qsTr("disconnected")
+        title: connected ? profilename : qsTr("disconnected")
         anchors {
             top: parent.top
             right: parent.right
@@ -22,67 +22,47 @@ Page {
             left: parent.left
         }
         contentHeight: mainGrid.height
-        clip: true
-        Item {
-            height: mainGrid.height
-            width: parent.width
-            Grid {
-                id: mainGrid
+        Grid {
+            id: mainGrid
 
-                columns: Screen.sizeCategory
-                         >= Screen.Large ? 3 : (orientation === Orientation.Landscape
-                                                || orientation
-                                                === Orientation.LandscapeInverted) ? 4 : 2
-                anchors.horizontalCenter: parent.horizontalCenter
-                Repeater {
-                    model: mainMenuModel
-                    delegate: Component {
-                        BackgroundItem {
-                            id: gridItem
-                            width: Theme.itemSizeHuge
-                            height: Theme.itemSizeHuge
-                            Rectangle {
-                                anchors.fill: parent
-                                anchors.margins: Theme.paddingSmall
-                                color: Theme.rgba(
-                                           Theme.highlightBackgroundColor,
-                                           Theme.highlightBackgroundOpacity)
-                            }
-                            Column {
-                                anchors.centerIn: parent
-                                Image {
-                                    id: itemIcon
-                                    source: icon
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                                Label {
-                                    id: itemLabel
-                                    anchors {
-                                        horizontalCenter: parent.horizontalCenter
-                                    }
-                                    font.pixelSize: Theme.fontSizeMedium
-                                    width: gridItem.width - (2 * Theme.paddingSmall)
-                                    horizontalAlignment: "AlignHCenter"
-                                     scale: paintedWidth > width ? (width / paintedWidth) : 1
-                               /*     transform: [
-                                        Scale {
-                                            id: scale
-                                            xScale: yScale
-                                            yScale: itemLabel.width > (gridItem.width - (2 * Theme.paddingSmall)) ? (gridItem.width - (2 * Theme.paddingSmall)) / itemLabel.width : 1
-                                        },
-                                        Translate {
-                                                        x: scale.xScale != 1 ? ((gridItem.width - (2 * Theme.paddingSmall))-itemLabel.width*scale.xScale)/2 : 0 ;
-                                                        y: scale.yScale != 1 ? ((gridItem.height - (2 * Theme.paddingSmall))-itemLabel.height*scale.yScale)/2 : 0;}
-                                    ]
-*/
-                                    text: name
-                                }
-                            }
-
-                            onClicked: {
-                                parseClickedMainMenu(ident)
-                            }
+            columns: Screen.sizeCategory
+                     >= Screen.Large ? 3 : (orientation === Orientation.Landscape
+                                            || orientation
+                                            === Orientation.LandscapeInverted) ? 4 : 2
+            anchors.horizontalCenter: parent.horizontalCenter
+            Repeater {
+                model: mainMenuModel
+                delegate: BackgroundItem {
+                    id: gridItem
+                    width: Theme.itemSizeHuge
+                    height: Theme.itemSizeHuge
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.margins: Theme.paddingSmall
+                        color: Theme.rgba(
+                                   Theme.highlightBackgroundColor,
+                                   Theme.highlightBackgroundOpacity)
+                    }
+                    Column {
+                        anchors.centerIn: parent
+                        Image {
+                            id: itemIcon
+                            source: icon
+                            anchors.horizontalCenter: parent.horizontalCenter
                         }
+                        Label {
+                            id: itemLabel
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            font.pixelSize: Theme.fontSizeMedium
+                            width: gridItem.width - (2 * Theme.paddingSmall)
+                            horizontalAlignment: "AlignHCenter"
+                            scale: paintedWidth > width ? (width / paintedWidth) : 1
+                            text: name
+                        }
+                    }
+
+                    onClicked: {
+                        parseClickedMainMenu(ident)
                     }
                 }
             }
@@ -114,17 +94,6 @@ Page {
 
     ListModel {
         id: mainMenuModel
-    }
-
-    Timer {
-        id: showCurrentSongTimer
-        interval: 15000
-        repeat: false
-        onTriggered: {
-            if (connected) {
-                pageStack.navigateForward(PageStackAction.Animated)
-            }
-        }
     }
 
     function parseClickedMainMenu(ident) {
@@ -175,11 +144,6 @@ Page {
             }
 
             pageStack.pushAttached(mPlaylistPage)
-            showCurrentSongTimer.start()
-        } else if (status === PageStatus.Deactivating) {
-            if (showCurrentSongTimer.running) {
-                showCurrentSongTimer.stop()
-            }
         }
     }
 }

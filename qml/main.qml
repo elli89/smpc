@@ -290,7 +290,6 @@ ApplicationWindow
         enabled: false
     }
 
-
     ControlPanel {
         id: quickControlPanel
     }
